@@ -8,12 +8,19 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
             messages:[...prev.messages,botMessage],
         }))
     }
+    const handle2message=()=>{
+      const botMessage=createChatBotMessage('I will guide for your booking');
+      setState((prev)=>({
+        ...prev,
+        messages:[...prev.messages,botMessage],
+      }))
+    }
 
   return (
     <div>
       {React.Children.map(children, (child) => {
         return React.cloneElement(child, {
-          actions: {handleHello},
+          actions: {handleHello,handle2message},
         });
       })}
     </div>

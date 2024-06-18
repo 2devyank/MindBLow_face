@@ -6,6 +6,10 @@ const MessageParser = ({ children, actions }) => {
         console.log('hi')
         actions.handleHello();
     }
+    if(message.includes('assistant')){
+      console.log('hi')
+      actions.handle2message();
+  }
   };
 
   return (

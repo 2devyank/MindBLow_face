@@ -6,8 +6,8 @@ import ActionProvider from '../chatbot/ActionProvider'
 
 const Chat = () => {
   return (
-    <div>
-    <Chatbot
+    <div className='chatbotcover'>
+    <Chatbot 
         config={config}
         messageParser={MessageParser}
         actionProvider={ActionProvider}
