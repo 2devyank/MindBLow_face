@@ -1,0 +1,10 @@
+.multipleboxcover{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+}
+.item{
+    padding: 4px 4px;
+}

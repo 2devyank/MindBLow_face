@@ -1,10 +1,14 @@
 .react-chatbot-kit-chat-container {
+    border: 1px solid black;
    width: 700px !important;
 }
 .react-chatbot-kit-chat-bot-message {
     margin: 0px !important;
 }
 .react-chatbot-kit-chat-bot-avatar-container{
+    display: none !important;
+}
+.react-chatbot-kit-chat-input-container{
     display: none !important;
 }
 .chatbotcover{

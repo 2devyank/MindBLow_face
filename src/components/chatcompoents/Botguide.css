@@ -1,0 +1,11 @@
+.widget_ok_conatiner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.butok{
+    background-color: rgb(140, 220, 243);
+    padding: 7px 7px ;
+    border:none;
+    border-radius: 1rem;
+}

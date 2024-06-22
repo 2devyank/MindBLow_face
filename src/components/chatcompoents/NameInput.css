@@ -1,0 +1,17 @@
+.inputbox{
+    /* border:1px solid red; */
+    position:absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+}
+.inputContainer{
+    width: 90%;
+    padding: 6px 6px;
+    /* border-style: none; */
+    border-radius: 6px;
+}
+.send_Container{
+    padding: 6px 6px;
+}

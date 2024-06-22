@@ -1,8 +1,15 @@
 import React from 'react'
+import "./Botguide.css"
 
-const Botguide = () => {
+function Botguide  (props) {
+  
+    console.log(props);
+    
+  
   return (
-    <button>ok Got it!</button>
+    <div className='widget_ok_conatiner'>
+    <button className='butok' onClick={props.actionProvider.handleMessage}>ok Got it!</button>
+    </div>
   )
 }
 
