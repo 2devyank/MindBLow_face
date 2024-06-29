@@ -23,7 +23,8 @@ const Onboarding = () => {
         sunday: false,
       },
     });
-  const speciality=[{value:'Depression',label:'Depression'}, {value:'Anxiety',label:'Anxiety'}, {value:'PTSD',label:"PTSD"}, {value:'Couples Therapy',label:'Couples Therapy'},{ value:'Addiction',lable:'Addiction'}];
+    const CountryDigit=[{value:"India",label:"+91",}]
+  const speciality=[{value:'Depression',label:'Depression'}, {value:'Anxiety',label:'Anxiety'}, {value:'PTSD',label:"PTSD"}, {value:'Couples Therapy',label:'Couples Therapy'},{ value:'Addiction',label:'Addiction'}];
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
@@ -55,7 +56,7 @@ const Onboarding = () => {
       console.log('Form submitted:', formData);
       // Reset form or navigate to next step
     };
- 
+    const [isFocused,setIsFocused]=useState(false);
   return (
     <div>Onboarding
 
@@ -68,8 +69,8 @@ const Onboarding = () => {
         <div className="form-group">
           
          <CustomizeInput
-         type={"text"}
-          value={formData.firstName}
+         type="text"
+          // value={formData.firstName}
            onChange={handleInputChange}
            placeholder={"Enter Full Name"}
 
@@ -80,26 +81,26 @@ const Onboarding = () => {
         <div className="form-group">
           
           <CustomizeInput
-            type={"email"}
+            type="email"
             placeholder={"Enter You Email"}
-            value={formData.email}
+            // value={formData.email}
             onChange={handleInputChange}
            
           />
         </div>
 
-        <div className="form-group">
-          
+        <div className="w-3/4 flex gap-1">
+       <CustomizeSelect options={CountryDigit} digit={true} placeholder={"+91"}/>
           <CustomizeInput
-            type={"tel"}
-           placeholder={"Enter Your Phone Number"}
-            value={formData.phone}
+            type="tel"
+           placeholder={"8765439898"}
+            // value={formData.phone}
             onChange={handleInputChange}
             
           />
         </div>
 
-       <CustomizeSelect options={speciality}/>
+       <CustomizeSelect options={speciality} digit={false} placeholder={"Depression,Anxiety"}/>
 
        
                   {/* // value={specialty}
@@ -108,44 +109,34 @@ const Onboarding = () => {
                
 
         <div className="form-group">
-          <label htmlFor="yearsOfExperience">Years of Experience</label>
-          <input
-            type="number"
-            id="yearsOfExperience"
-            name="yearsOfExperience"
-            value={formData.yearsOfExperience}
-            onChange={handleInputChange}
-            required
-          />
+         
+         <CustomizeInput
+          type="number"
+          placeholder={"You Experience"}
+           // value={formData.phone}
+           onChange={handleInputChange}
+         />
         </div>
 
         <div className="form-group">
-          <label htmlFor="bio">Bio</label>
+          
           <textarea
+          className={`${isFocused?'bg-white-500 border custom':'border-transparent bg-white'}
+            w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-blue-500 resize-none`}
             id="bio"
             name="bio"
+            rows={4}
             value={formData.bio}
             onChange={handleInputChange}
             required
-          ></textarea>
+            onFocus={()=>setIsFocused(true)}
+            onBlur={()=>setIsFocused(false)}
+            placeholder='About Me'
+          />
         </div>
 
-        <div className="form-group">
-          <label>Availability</label>
-          <div className="checkbox-group">
-            {Object.keys(formData.availability).map((day) => (
-              <label key={day}>
-                <input
-                  type="checkbox"
-                  name={day}
-                  checked={formData.availability[day]}
-                  onChange={handleCheckboxChange}
-                />
-                {day.charAt(0).toUpperCase() + day.slice(1)}
-              </label>
-            ))}
-          </div>
-        </div>
+        
+       
 
         <button type="submit">Submit</button>
       </form>
