@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import "../style/Onboarding.css"
+import CustomizeInput from '../components/CustomizeInput';
+import CustomizeSelect from '../components/Select/CustomizeSelect';
 
 const Onboarding = () => {
     const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ const Onboarding = () => {
         sunday: false,
       },
     });
-  
+  const speciality=[{value:'Depression',label:'Depression'}, {value:'Anxiety',label:'Anxiety'}, {value:'PTSD',label:"PTSD"}, {value:'Couples Therapy',label:'Couples Therapy'},{ value:'Addiction',lable:'Addiction'}];
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
@@ -53,93 +55,57 @@ const Onboarding = () => {
       console.log('Form submitted:', formData);
       // Reset form or navigate to next step
     };
-  
+ 
   return (
     <div>Onboarding
 
 
 
   
-    <div className="psychologist-onboarding">
+    <div className="p-10 w-full">
       <h2>Psychologist Onboarding</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="firstName">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleInputChange}
-            required
-          />
+          
+         <CustomizeInput
+         type={"text"}
+          value={formData.firstName}
+           onChange={handleInputChange}
+           placeholder={"Enter Full Name"}
+
+           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
 
         <div className="form-group">
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
+          
+          <CustomizeInput
+            type={"email"}
+            placeholder={"Enter You Email"}
             value={formData.email}
             onChange={handleInputChange}
-            required
+           
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="phone">Phone</label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
+          
+          <CustomizeInput
+            type={"tel"}
+           placeholder={"Enter Your Phone Number"}
             value={formData.phone}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="licenseNumber">License Number</label>
-          <input
-            type="text"
-            id="licenseNumber"
-            name="licenseNumber"
-            value={formData.licenseNumber}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+       <CustomizeSelect options={speciality}/>
 
-        <div className="form-group">
-          <label>Specialties</label>
-          <div className="checkbox-group">
-            {['Depression', 'Anxiety', 'PTSD', 'Couples Therapy', 'Addiction'].map((specialty) => (
-              <label key={specialty}>
-                <input
-                  type="checkbox"
-                  name="specialties"
-                  value={specialty}
-                  checked={formData.specialties.includes(specialty)}
-                  onChange={handleSpecialtiesChange}
-                />
-                {specialty}
-              </label>
-            ))}
-          </div>
-        </div>
+       
+                  {/* // value={specialty}
+                  // checked={formData.specialties.includes(specialty)}
+                  // onChange={handleSpecialtiesChange} */}
+               
 
         <div className="form-group">
           <label htmlFor="yearsOfExperience">Years of Experience</label>
