@@ -1,17 +1,14 @@
 import React, { useState } from 'react'
 import ReactSelect from 'react-select'
 
-const CustomizeSelect = ({options,placeholder,digit}) => {
+const CustomizeSelect = ({options,placeholder,digit,selectedOptions,handleChangeSelect}) => {
   const CheckboxOption = ({ innerProps, label, isSelected }) => (
     <div className='p-2 flex gap-4' {...innerProps}>
       <input type="checkbox" checked={isSelected} readOnly />
       <label>{label}</label>
     </div>
   );
-  const [selectedOptions,setSelectedOptions]=useState([]);
-  const handleChangeSelect=(selected)=>{
-    setSelectedOptions(selected);
-  }
+ 
   return (
     <>
    {!digit && (

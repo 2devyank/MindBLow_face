@@ -13,7 +13,7 @@ const CustomizeInput = ({placeholder,value,onChange}) => {
     onFocus={()=>setIsFocused(true)}
     onBlur={()=>setIsFocused(false)}
    
-    // value={value}
+    value={value}
     onChange={onChange}
     required
     placeholder={placeholder}
