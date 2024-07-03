@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Chat from "./page/Chat"
 import HomePage from "./page/HomePage"
 import Onboarding from "./page/Onboarding"
+import PsychList from "./page/PsychList"
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Route path="/chat" element={<Chat/>}/>
       <Route path="/" element={<HomePage/>}/>
       <Route path="/psych-register" element={<Onboarding/>}/>
+      <Route path="/psychlist" element={<PsychList/>}/>
     </Routes>
    </div>
    </BrowserRouter>

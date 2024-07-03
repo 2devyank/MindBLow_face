@@ -147,7 +147,7 @@ const onOtpSubmit=(otp)=>{
               </button>}
               {/* {displayotp && <Otp length={6}/>} */}
                 </div>
-              <Otp length={6} onOtpSubmit={onOtpSubmit}/>
+             {displayotp && <Otp length={6} onOtpSubmit={onOtpSubmit}/>}
             </div>
 
           
