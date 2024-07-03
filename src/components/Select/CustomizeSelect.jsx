@@ -8,7 +8,7 @@ const CustomizeSelect = ({options,placeholder,digit,selectedOptions,handleChange
       <label>{label}</label>
     </div>
   );
- 
+ console.log("selec",selectedOptions);
   return (
     <>
    {!digit && (

@@ -4,13 +4,14 @@ import CustomizeInput from "../components/CustomizeInput";
 import CustomizeSelect from "../components/Select/CustomizeSelect";
 import Calendar from "../components/Calendar/Calendar";
 import ReactSelect from "react-select";
+import Otp from "../components/otp/Otp";
 
 const Onboarding = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    CountryDigit:"",
+    countryDigit:"",
     phone: "",
     licenseNumber: "",
     specialties: [],
@@ -26,7 +27,7 @@ const Onboarding = () => {
       sunday: false,
     },
   });
-  const CountryDigit = [{ value: "India", label: "+91" }];
+  
   const speciality = [
     { value: "Depression", label: "Depression" },
     { value: "Anxiety", label: "Anxiety" },
@@ -78,14 +79,23 @@ const Onboarding = () => {
   };
  
   const [isFocused, setIsFocused] = useState(false);
-  // const [selectedOptions,setSelectedOptions]=useState([]);
+  
   const handleChangeSelect=(name,selected)=>{
-    console.log("inn",selected)
-    // setSelectedOptions(selected.label);
     setFormData({ ...formData, [name]: selected.label });
   }
-  console.log(formData.CountryDigit+formData.phone)
- 
+  const handleChangeSpecialties=(name,selected)=>{
+    setFormData({ ...formData, [name]: selected });
+  }
+  console.log(formData)
+  const digits=[{value:"+91",label:"+91"},
+    {value:"+1",label:"+1"},
+    {value:"+12",label:"+12"},
+   
+]
+const [displayotp,setdisplayotp]=useState(false);
+const onOtpSubmit=(otp)=>{
+  console.log(otp);
+}
   return (
     <div>
       Onboarding
@@ -111,21 +121,33 @@ const Onboarding = () => {
                 onChange={(e)=>handleInputChange("email",e)}
               />
             </div>
+            <div className="flex flex-col gap-5">
 
             <div className="w-3/4 flex gap-1">
               <CustomizeSelect
-                options={CountryDigit}
+                options={digits}
                 digit={true}
                 placeholder={"+91"}
-                selectedOptions={formData.CountryDigit}
-                handleChangeSelect={(option)=>handleChangeSelect("CountryDigit",option)}
-              />
+                // selectedOptions={formData.countryDigit}
+                handleChangeSelect={(option)=>handleChangeSelect("countryDigit",option)}
+                />
+              
               <CustomizeInput
                 type="tel"
                 placeholder={"8765439898"}
                 value={formData.phone}
                 onChange={(e)=>handleInputChange("phone",e)}
-              />
+                />
+              {formData.countryDigit && formData.phone && <button 
+              onClick={()=>{
+                setdisplayotp(true);
+              }}
+              className="px-4 py-2 w-1/3 background-blue">
+                Get Otp
+              </button>}
+              {/* {displayotp && <Otp length={6}/>} */}
+                </div>
+              <Otp length={6} onOtpSubmit={onOtpSubmit}/>
             </div>
 
           
@@ -137,6 +159,8 @@ const Onboarding = () => {
               options={speciality}
               digit={false}
               placeholder={"Depression,Anxiety"}
+              value={formData.specialties}
+              handleChangeSelect={(option)=>handleChangeSpecialties("specialties",option)}
             />
 
             {/* // value={specialty}
