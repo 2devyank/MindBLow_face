@@ -8,94 +8,74 @@ import Otp from "../components/otp/Otp";
 
 const Onboarding = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    countryDigit:"",
-    phone: "",
-    licenseNumber: "",
-    specialties: [],
-    yearsOfExperience: "",
-    bio: "",
-    availability: {
-      monday: false,
-      tuesday: false,
-      wednesday: false,
-      thursday: false,
-      friday: false,
-      saturday: false,
-      sunday: false,
-    },
+    firstName: "devyank",
+    email: "dev@gmail",
+    countryDigit: "+91",
+    phone: "8448137331",
+    specialties: ["Anxiety"],
+    yearsOfExperience: "1",
+    bio: "Hello there ",
+    timings: [
+      {
+        day: "Monday",
+        startTime: "10:00am",
+        endTime: "12:00am",
+      },
+    ],
+    couplefee:500,
+    singlefee:400,
+    meetLink: "https://meet",
+    sessionTime: "1 hour",
+    sessionGap: "30 min",
   });
-  
+
   const speciality = [
-    { value: "Depression", label: "Depression" },
-    { value: "Anxiety", label: "Anxiety" },
-    { value: "PTSD", label: "PTSD" },
-    { value: "Couples Therapy", label: "Couples Therapy" },
-    { value: "Addiction", label: "Addiction" },
+    "Depression",
+    "Anxiety",
+    "PTSD",
+    "Couples Therapy",
+    "Addiction",
   ];
-  const SessionTime=[{ value: "1 hour", label: "1 hour" },{ value: "45 min", label: "45 min" },{ value: "30 min", label: "30 min" }]
-  const GapTime=[{ value: "2 hour", label: "2 hour" },{ value: "1 hour", label: "1 hour" },{ value: "45 min", label: "45 min" },{ value: "30 min", label: "30 min" }]
- 
-  const handleInputChange = (name,e) => {
+  const SessionTime = ["1 hour", "45 min", "30 min"];
+  const GapTime = ["2 hour", "1 hour", "45 min", "30 min"];
+
+  const handleInputChange = (name, e) => {
     console.log("change");
     const { value } = e.target;
-    console.log("name",name);
-    console.log("val",value);
+    console.log("name", name);
+    console.log("val", value);
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setFormData({
-      ...formData,
-      availability: { ...formData.availability, [name]: checked },
-    });
-  };
-
-  const handleSpecialtiesChange = (e) => {
-    const { value, checked } = e.target;
-    if (checked) {
-      setFormData({
-        ...formData,
-        specialties: [...formData.specialties, value],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        specialties: formData.specialties.filter(
-          (specialty) => specialty !== value
-        ),
-      });
-    }
-  };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would typically send the formData to your backend API
     console.log("Form submitted:", formData);
     // Reset form or navigate to next step
   };
- 
+
   const [isFocused, setIsFocused] = useState(false);
+
   
-  const handleChangeSelect=(name,selected)=>{
-    setFormData({ ...formData, [name]: selected.label });
-  }
-  const handleChangeSpecialties=(name,selected)=>{
+  const handleChangeSpecialties = (name, selected) => {
     setFormData({ ...formData, [name]: selected });
-  }
-  console.log(formData)
-  const digits=[{value:"+91",label:"+91"},
-    {value:"+1",label:"+1"},
-    {value:"+12",label:"+12"},
-   
-]
-const [displayotp,setdisplayotp]=useState(false);
-const onOtpSubmit=(otp)=>{
-  console.log(otp);
-}
+  };
+  // console.log(formData);
+  const digits = ["+91", "+1", "+12"];
+  const [displayotp, setdisplayotp] = useState(false);
+  const onOtpSubmit = (otp) => {
+    console.log(otp);
+  };
+
+  const changeReactSelectoptions = (array) => {
+    const selected = array.map((op) => ({
+      value: op,
+      label: op,
+    }));
+    return selected;
+  };
+
   return (
     <div>
       Onboarding
@@ -108,7 +88,7 @@ const onOtpSubmit=(otp)=>{
               <CustomizeInput
                 type="text"
                 value={formData.firstName}
-                onChange={(e)=>handleInputChange("firstName",e)}
+                onChange={(e) => handleInputChange("firstName", e)}
                 placeholder={"Enter Full Name"}
               />
             </div>
@@ -118,61 +98,69 @@ const onOtpSubmit=(otp)=>{
                 type="email"
                 placeholder={"Enter You Email"}
                 value={formData.email}
-                onChange={(e)=>handleInputChange("email",e)}
+                onChange={(e) => handleInputChange("email", e)}
               />
             </div>
             <div className="flex flex-col gap-5">
+              <div className="w-3/4 flex gap-1">
+                <CustomizeSelect
+                 
+                  digit={true}
+                  placeholder={"+91"}
+                 
+                  options={changeReactSelectoptions(digits)}
+                  selectedOptions={changeReactSelectoptions(digits).find(
+                    (op) => op.value === formData.countryDigit
+                  )}
+                  handleChangeSelect={(option) =>
+                    handleChangeSpecialties("countryDigit", option.value)
+                  }
+                />
 
-            <div className="w-3/4 flex gap-1">
-              <CustomizeSelect
-                options={digits}
-                digit={true}
-                placeholder={"+91"}
-                // selectedOptions={formData.countryDigit}
-                handleChangeSelect={(option)=>handleChangeSelect("countryDigit",option)}
+                <CustomizeInput
+                  type="tel"
+                  placeholder={"8765439898"}
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange("phone", e)}
                 />
-              
-              <CustomizeInput
-                type="tel"
-                placeholder={"8765439898"}
-                value={formData.phone}
-                onChange={(e)=>handleInputChange("phone",e)}
-                />
-              {formData.countryDigit && formData.phone && <button 
-              onClick={()=>{
-                setdisplayotp(true);
-              }}
-              className="px-4 py-2 w-1/3 background-blue">
-                Get Otp
-              </button>}
-              {/* {displayotp && <Otp length={6}/>} */}
-                </div>
-             {displayotp && <Otp length={6} onOtpSubmit={onOtpSubmit}/>}
+                {formData.countryDigit && formData.phone && (
+                  <button
+                    onClick={() => {
+                      setdisplayotp(true);
+                    }}
+                    className="px-4 py-2 w-1/3 background-blue"
+                  >
+                    Get Otp
+                  </button>
+                )}
+                {/* {displayotp && <Otp length={6}/>} */}
+              </div>
+              {displayotp && <Otp length={6} onOtpSubmit={onOtpSubmit} />}
             </div>
-
-          
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
             <h2>Speciality</h2>
 
             <CustomizeSelect
-              options={speciality}
+              
               digit={false}
               placeholder={"Depression,Anxiety"}
-              value={formData.specialties}
-              handleChangeSelect={(option)=>handleChangeSpecialties("specialties",option)}
+              options={changeReactSelectoptions(speciality)}
+              selectedOptions={changeReactSelectoptions(speciality)?.filter((item)=>formData?.specialties?.includes(item.value)
+              )}
+              handleChangeSelect={(option) =>
+                handleChangeSpecialties("specialties", option.map((op)=>op.value))
+              }
             />
 
-            {/* // value={specialty}
-                  // checked={formData.specialties.includes(specialty)}
-                  // onChange={handleSpecialtiesChange} */}
+           
 
             <div className="w-3/4">
               <CustomizeInput
                 type="number"
                 placeholder={"You Experience"}
-                // value={formData.phone}
-                onChange={handleInputChange}
+                value={formData.yearsOfExperience}
+                onChange={(e) => handleInputChange("yearsOfExperience", e)}
               />
             </div>
 
@@ -188,7 +176,7 @@ const onOtpSubmit=(otp)=>{
                 name="bio"
                 rows={4}
                 value={formData.bio}
-                onChange={handleInputChange}
+                onChange={(e) => handleInputChange("bio", e)}
                 required
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -198,59 +186,96 @@ const onOtpSubmit=(otp)=>{
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
             <h2>Timings</h2>
-            {["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].map((item) => {
-              return(
-               <Calendar key={item} item={item}/>
-              );
+            {[
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ].map((item) => {
+              return <Calendar key={item} item={item} setFormData={setFormData} formdata={formData.timings}/>;
             })}
-           
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
             <h2>Session Fee</h2>
-            <div className='w-1/3'>  
-        <CustomizeInput placeholder={"Fees for Individual"}/>
-        <CustomizeInput placeholder={"Fees for Couples"}/>
-    </div>
+            <div className="w-1/3">
+              <CustomizeInput
+                value={formData.singlefee}
+                onChange={(e) => handleInputChange("singlefee", e)}
+                placeholder={"Fees for Individual"}
+              />
+              <CustomizeInput
+                value={formData.couplefee}
+                onChange={(e) => handleInputChange("couplefee", e)}
+                placeholder={"Fees for Couples"}
+              />
+            </div>
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
             <h2>Session Details</h2>
-            <div className='w-1/3'>  
-        <CustomizeInput placeholder={"Link For Session"}/>
-        <ReactSelect
-        styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              border:0,
-              outline:0,
-              color:'lightgray',
-              boxShadow:state.isFocused?'0px -2px 10px 0px rgba(18, 94, 104, 0.75)':'',
-              WebkitBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(37, 48, 143, 0.75)':'',
-              MozBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(34, 107, 73, 0.75)':'',
-             }),
-           }}
-           options={SessionTime}
-          //  value={endtime}
-          //  onChange={handleEnd}
-           placeholder="Session time"
-        />
-         <ReactSelect
-        styles={{
-            control: (baseStyles, state) => ({
-              ...baseStyles,
-              border:0,
-              outline:0,
-              color:'lightgray',
-              boxShadow:state.isFocused?'0px -2px 10px 0px rgba(18, 94, 104, 0.75)':'',
-              WebkitBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(37, 48, 143, 0.75)':'',
-              MozBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(34, 107, 73, 0.75)':'',
-             }),
-           }}
-           options={GapTime}
-          //  value={endtime}
-          //  onChange={handleEnd}
-           placeholder="Gap Between Session's"
-        />
-    </div>
+            <div className="w-1/3">
+              <CustomizeInput
+                value={formData.meetLink}
+                onChange={(e) => handleInputChange("meetLink", e)}
+                placeholder={"Link For Session"}
+              />
+              <ReactSelect
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    border: 0,
+                    outline: 0,
+                    color: "lightgray",
+                    boxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(18, 94, 104, 0.75)"
+                      : "",
+                    WebkitBoxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(37, 48, 143, 0.75)"
+                      : "",
+                    MozBoxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(34, 107, 73, 0.75)"
+                      : "",
+                  }),
+                }}
+                options={changeReactSelectoptions(SessionTime)}
+                defaultValue={changeReactSelectoptions(SessionTime).find(
+                  (op) => op.value === formData.sessionTime
+                )}
+                onChange={(option) =>
+                  handleChangeSpecialties("sessionTime", option.value)
+                }
+                placeholder="Session time"
+              />
+              <ReactSelect
+                styles={{
+                  control: (baseStyles, state) => ({
+                    ...baseStyles,
+                    border: 0,
+                    outline: 0,
+                    color: "lightgray",
+                    boxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(18, 94, 104, 0.75)"
+                      : "",
+                    WebkitBoxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(37, 48, 143, 0.75)"
+                      : "",
+                    MozBoxShadow: state.isFocused
+                      ? "0px -2px 10px 0px rgba(34, 107, 73, 0.75)"
+                      : "",
+                  }),
+                }}
+                options={changeReactSelectoptions(GapTime)}
+                defaultValue={changeReactSelectoptions(GapTime).find(
+                  (op) => op.value === formData.sessionGap
+                )}
+                onChange={(option) =>
+                  handleChangeSpecialties("sessionGap", option.value)
+                }
+                placeholder="Gap Between Session's"
+              />
+            </div>
           </div>
         </form>
       </div>

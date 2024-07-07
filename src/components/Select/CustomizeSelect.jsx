@@ -8,7 +8,7 @@ const CustomizeSelect = ({options,placeholder,digit,selectedOptions,handleChange
       <label>{label}</label>
     </div>
   );
- console.log("selec",selectedOptions);
+//  console.log("selec",selectedOptions);
   return (
     <>
    {!digit && (
@@ -33,7 +33,7 @@ const CustomizeSelect = ({options,placeholder,digit,selectedOptions,handleChange
       }}
       options={options} 
       onChange={handleChangeSelect}
-      value={selectedOptions}
+      defaultValue={selectedOptions}
       placeholder={placeholder}
       />
     )} 
@@ -60,7 +60,7 @@ const CustomizeSelect = ({options,placeholder,digit,selectedOptions,handleChange
       }}
       options={options} 
       onChange={handleChangeSelect}
-      value={selectedOptions}
+      defaultValue={selectedOptions}
       placeholder={placeholder}
       />
     }

@@ -3,25 +3,39 @@ import CustomizeSelect from '../Select/CustomizeSelect'
 import ReactSelect from 'react-select'
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Timings = () => {
-    const time=[{value:"6:00 am",label:"6:00 am"},
-        {value:"7:00 am",label:"7:00 am"},
-        {value:"8:00 am",label:"8:00 am"},
-        {value:"9:00 am",label:"9:00 am"},
-        {value:"10:00 am",label:"10:00 am"},
-        {value:"11:00 am",label:"11:00 am"},
-        {value:"12:00 am",label:"12:00 am"},
-        {value:"1:00 pm",label:"1:00 pm"},
-        {value:"2:00 pm",label:"2:00 pm"}
+const Timings = ({item,formdata,setFormData}) => {
+    const time=["6:00 am",
+       "7:00am",
+        "8:00am",
+        "9:00am",
+       "10:00am",
+        "11:00am",
+        "12:00am",
+        "1:00pm",
+        "2:00pm"
     ]
-    const [starttime,setstartime]=useState("");
-    const [endtime,setendtime]=useState("");
-    const handleStart=(selected)=>{
-        setstartime(selected);
-      }
-      const handleEnd=(selected)=>{
-        setendtime(selected);
-      }
+    // console.log("time",formdata);
+    // console.log("item",item);
+    const select=formdata.find((it)=>it.day===item);
+    console.log("select",select);
+    const changeReactSelectoptions = (array) => {
+      const selected = array.map((op) => ({
+        value: op,
+        label: op,
+      }));
+      return selected;
+    };
+    const handleChangeSpecialties = (name, selected) => {
+      setFormData({ ...formData, [name]: selected });
+    };
+    // const [starttime,setstartime]=useState("");
+    // const [endtime,setendtime]=useState("");
+    // const handleStart=(selected)=>{
+    //     setstartime(selected);
+    //   }
+    //   const handleEnd=(selected)=>{
+    //     setendtime(selected);
+    //   }
       const Deletetimings=()=>{
         setendtime("");
         setstartime("");
@@ -40,9 +54,14 @@ const Timings = () => {
               MozBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(34, 107, 73, 0.75)':'',
              }),
            }}
-           options={time}
-           value={starttime}
-           onChange={handleStart}
+      
+          options={changeReactSelectoptions(time)}
+                defaultValue={changeReactSelectoptions(time).find(
+                  (op) => op.value === select.startTime
+                )}
+                // onChange={(option) =>
+                //   handleChangeSpecialties("sessionGap", option.value)
+                // }
            placeholder="start time"
         />
         <ReactSelect
@@ -57,9 +76,13 @@ const Timings = () => {
               MozBoxShadow:state.isFocused?'0px -2px 10px 0px rgba(34, 107, 73, 0.75)':'',
              }),
            }}
-           options={time}
-           value={endtime}
-           onChange={handleEnd}
+          options={changeReactSelectoptions(time)}
+                defaultValue={changeReactSelectoptions(time).find(
+                  (op) => op.value === select.endTime
+                )}
+                // onChange={(option) =>
+                //   handleChangeSpecialties("sessionGap", option.value)
+                // }
            placeholder="End Time"
         />
 <DeleteIcon className='cursor-pointer' onClick={Deletetimings}
