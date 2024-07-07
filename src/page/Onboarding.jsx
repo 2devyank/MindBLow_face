@@ -5,7 +5,8 @@ import CustomizeSelect from "../components/Select/CustomizeSelect";
 import Calendar from "../components/Calendar/Calendar";
 import ReactSelect from "react-select";
 import Otp from "../components/otp/Otp";
-
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "../firebase";
 const Onboarding = () => {
   const [formData, setFormData] = useState({
     firstName: "devyank",
@@ -22,13 +23,14 @@ const Onboarding = () => {
         endTime: "12:00am",
       },
     ],
-    couplefee:500,
-    singlefee:400,
+    couplefee: 500,
+    singlefee: 400,
     meetLink: "https://meet",
     sessionTime: "1 hour",
     sessionGap: "30 min",
   });
 
+  
   const speciality = [
     "Depression",
     "Anxiety",
@@ -47,17 +49,18 @@ const Onboarding = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Here you would typically send the formData to your backend API
-    console.log("Form submitted:", formData);
-    // Reset form or navigate to next step
+    try {
+      const docRef = await addDoc(collection(db, "psych"), formData);
+      console.log("doc id", docRef.id);
+    } catch (e) {
+      console.error("error adding doc", e);
+    }
   };
 
   const [isFocused, setIsFocused] = useState(false);
 
-  
   const handleChangeSpecialties = (name, selected) => {
     setFormData({ ...formData, [name]: selected });
   };
@@ -104,10 +107,8 @@ const Onboarding = () => {
             <div className="flex flex-col gap-5">
               <div className="w-3/4 flex gap-1">
                 <CustomizeSelect
-                 
                   digit={true}
                   placeholder={"+91"}
-                 
                   options={changeReactSelectoptions(digits)}
                   selectedOptions={changeReactSelectoptions(digits).find(
                     (op) => op.value === formData.countryDigit
@@ -142,18 +143,19 @@ const Onboarding = () => {
             <h2>Speciality</h2>
 
             <CustomizeSelect
-              
               digit={false}
               placeholder={"Depression,Anxiety"}
               options={changeReactSelectoptions(speciality)}
-              selectedOptions={changeReactSelectoptions(speciality)?.filter((item)=>formData?.specialties?.includes(item.value)
+              selectedOptions={changeReactSelectoptions(speciality)?.filter(
+                (item) => formData?.specialties?.includes(item.value)
               )}
               handleChangeSelect={(option) =>
-                handleChangeSpecialties("specialties", option.map((op)=>op.value))
+                handleChangeSpecialties(
+                  "specialties",
+                  option.map((op) => op.value)
+                )
               }
             />
-
-           
 
             <div className="w-3/4">
               <CustomizeInput
@@ -195,7 +197,14 @@ const Onboarding = () => {
               "Saturday",
               "Sunday",
             ].map((item) => {
-              return <Calendar key={item} item={item} setFormData={setFormData} formdata={formData.timings}/>;
+              return (
+                <Calendar
+                  key={item}
+                  item={item}
+                  setFormData={setFormData}
+                  formdata={formData.timings}
+                />
+              );
             })}
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
@@ -277,6 +286,7 @@ const Onboarding = () => {
               />
             </div>
           </div>
+          <button type="submit">Submit</button>
         </form>
       </div>
     </div>
