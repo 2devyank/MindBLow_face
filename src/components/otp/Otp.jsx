@@ -1,4 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+// import { Psychstate } from "../../context/PsychContext.jsx";
+import { Psychstate } from "../../context/PsychContext";
+// import { Psychstate } from "../../context/psychContext";
 
 const Otp = ({ length ,onOtpSubmit}) => {
   const [number, setnumber] = useState(new Array(length).fill(""));
@@ -30,7 +33,7 @@ const Otp = ({ length ,onOtpSubmit}) => {
   useEffect(() => {
     if (inputrefs.current[0]) inputrefs.current[0].focus();
   }, []);
-
+  const {verifyOtpCode,otp,encodedcode}=Psychstate();
   return (
     <div className="flex gap-3 items-center">
       OTP
@@ -50,6 +53,9 @@ const Otp = ({ length ,onOtpSubmit}) => {
           );
         })}
       </div>
+      <button onClick={()=>{
+        verifyOtpCode();
+      }}>Verify OTP</button>
     </div>
   );
 };

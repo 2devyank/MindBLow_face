@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomizeSelect from '../Select/CustomizeSelect'
 import ReactSelect from 'react-select'
 import DeleteIcon from '@mui/icons-material/Delete';
+
 
 const Timings = ({item,formdata,setFormData}) => {
     const time=["6:00 am",
@@ -14,10 +15,12 @@ const Timings = ({item,formdata,setFormData}) => {
         "1:00pm",
         "2:00pm"
     ]
-    // console.log("time",formdata);
-    // console.log("item",item);
+    const [start,setstart]=useState('');
+    const [end,setend]=useState('');
+
+    
     const select=formdata.find((it)=>it.day===item);
-    console.log("select",select);
+    
     const changeReactSelectoptions = (array) => {
       const selected = array.map((op) => ({
         value: op,
@@ -26,16 +29,18 @@ const Timings = ({item,formdata,setFormData}) => {
       return selected;
     };
     const handleChangeSpecialties = (name, selected) => {
-      setFormData({ ...formData, [name]: selected });
+      setFormData({ ...formdata, [name]: [selected] });
     };
-    // const [starttime,setstartime]=useState("");
-    // const [endtime,setendtime]=useState("");
-    // const handleStart=(selected)=>{
-    //     setstartime(selected);
-    //   }
-    //   const handleEnd=(selected)=>{
-    //     setendtime(selected);
-    //   }
+    useEffect(()=>{
+      // setFormData((prev)=>({...formdata,timings:[prev.timings,{day:item,startTime:start,endTime:end}]}))
+      if(end!==''){
+        setFormData((prev) => ({
+          ...prev,
+          timings: [...prev.timings, {day: item, startTime: start, endTime: end}]
+        }))
+      }
+    },[end])
+  
       const Deletetimings=()=>{
         setendtime("");
         setstartime("");
@@ -57,11 +62,11 @@ const Timings = ({item,formdata,setFormData}) => {
       
           options={changeReactSelectoptions(time)}
                 defaultValue={changeReactSelectoptions(time).find(
-                  (op) => op.value === select.startTime
+                  (op) => op.value === select?.startTime
                 )}
-                // onChange={(option) =>
-                //   handleChangeSpecialties("sessionGap", option.value)
-                // }
+                onChange={(option) =>
+                  setstart(option.value)
+                }
            placeholder="start time"
         />
         <ReactSelect
@@ -78,11 +83,11 @@ const Timings = ({item,formdata,setFormData}) => {
            }}
           options={changeReactSelectoptions(time)}
                 defaultValue={changeReactSelectoptions(time).find(
-                  (op) => op.value === select.endTime
+                  (op) => op.value === select?.endTime
                 )}
-                // onChange={(option) =>
-                //   handleChangeSpecialties("sessionGap", option.value)
-                // }
+                onChange={(option) =>
+                  setend(option.value)
+                }
            placeholder="End Time"
         />
 <DeleteIcon className='cursor-pointer' onClick={Deletetimings}

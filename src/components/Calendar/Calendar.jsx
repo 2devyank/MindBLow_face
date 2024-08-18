@@ -8,8 +8,8 @@ const Calendar = ({item,formdata,setFormData}) => {
   const handleChange = (event) => {
     setChecked(event.target.checked);
   };
-  const select=formdata.find((it)=>it.day===item);
-  console.log(formdata);
+  const select=formdata?.find((it)=>it.day===item);
+  console.log(select);
   return (
     <div className="w-1/3 p-4 flex flex-col gap-1">
         <div className='flex align-middle items-center '>
@@ -17,7 +17,7 @@ const Calendar = ({item,formdata,setFormData}) => {
       onChange={handleChange} />
     {item}
       </div>
-    {checked||select && <Timings item={item} setFormData={setFormData} formdata={formdata} />}
+    {(checked||select) && <Timings item={item} setFormData={setFormData} formdata={formdata} />}
   </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../style/Onboarding.css";
 import CustomizeInput from "../components/CustomizeInput";
 import CustomizeSelect from "../components/Select/CustomizeSelect";
@@ -7,29 +7,27 @@ import ReactSelect from "react-select";
 import Otp from "../components/otp/Otp";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase";
+import { Psychstate } from "../context/PsychContext";
 const Onboarding = () => {
-  const [formData, setFormData] = useState({
-    firstName: "devyank",
-    email: "dev@gmail",
-    countryDigit: "+91",
-    phone: "8448137331",
-    specialties: ["Anxiety"],
-    yearsOfExperience: "1",
-    bio: "Hello there ",
-    timings: [
-      {
-        day: "Monday",
-        startTime: "10:00am",
-        endTime: "12:00am",
-      },
-    ],
-    couplefee: 500,
-    singlefee: 400,
-    meetLink: "https://meet",
-    sessionTime: "1 hour",
-    sessionGap: "30 min",
-  });
-
+  
+   
+    // const data={
+    //    phone_number:"+918448137331"
+    // }
+    // fetch('http://localhost:8000/verify/getcode', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data)  
+    // })
+    // .then(response => response.json())
+    // .then(data => console.log(data))
+    // .catch(error => console.error('Error:', error));
+  
+  
+const {formData,setFormData,getOtpCode,setOtp,otp,encodedcode}=Psychstate?.() || {};
+// const {formData,setFormData,getOtpCode,setOtp,otp,encodedcode}=useContext(Psychstate);
   
   const speciality = [
     "Depression",
@@ -64,11 +62,12 @@ const Onboarding = () => {
   const handleChangeSpecialties = (name, selected) => {
     setFormData({ ...formData, [name]: selected });
   };
-  // console.log(formData);
+  console.log(formData);
   const digits = ["+91", "+1", "+12"];
   const [displayotp, setdisplayotp] = useState(false);
   const onOtpSubmit = (otp) => {
     console.log(otp);
+    setOtp(otp);
   };
 
   const changeReactSelectoptions = (array) => {
@@ -78,7 +77,8 @@ const Onboarding = () => {
     }));
     return selected;
   };
-
+console.log("dev",otp);
+console.log("dev2",encodedcode);
   return (
     <div>
       Onboarding
@@ -90,7 +90,7 @@ const Onboarding = () => {
             <div className="w-3/4">
               <CustomizeInput
                 type="text"
-                value={formData.firstName}
+                value={formData?.firstName}
                 onChange={(e) => handleInputChange("firstName", e)}
                 placeholder={"Enter Full Name"}
               />
@@ -100,7 +100,7 @@ const Onboarding = () => {
               <CustomizeInput
                 type="email"
                 placeholder={"Enter You Email"}
-                value={formData.email}
+                value={formData?.email}
                 onChange={(e) => handleInputChange("email", e)}
               />
             </div>
@@ -111,7 +111,7 @@ const Onboarding = () => {
                   placeholder={"+91"}
                   options={changeReactSelectoptions(digits)}
                   selectedOptions={changeReactSelectoptions(digits).find(
-                    (op) => op.value === formData.countryDigit
+                    (op) => op.value === formData?.countryDigit
                   )}
                   handleChangeSelect={(option) =>
                     handleChangeSpecialties("countryDigit", option.value)
@@ -121,12 +121,13 @@ const Onboarding = () => {
                 <CustomizeInput
                   type="tel"
                   placeholder={"8765439898"}
-                  value={formData.phone}
+                  value={formData?.phone}
                   onChange={(e) => handleInputChange("phone", e)}
                 />
-                {formData.countryDigit && formData.phone && (
+                {formData?.countryDigit && formData?.phone && (
                   <button
                     onClick={() => {
+                      getOtpCode({phone_number:`${formData?.countryDigit}${formData?.phone}`})
                       setdisplayotp(true);
                     }}
                     className="px-4 py-2 w-1/3 background-blue"
@@ -137,6 +138,8 @@ const Onboarding = () => {
                 {/* {displayotp && <Otp length={6}/>} */}
               </div>
               {displayotp && <Otp length={6} onOtpSubmit={onOtpSubmit} />}
+             
+
             </div>
           </div>
           <div className=" bg-gray-50 flex flex-col gap-2 p-2">
@@ -161,7 +164,7 @@ const Onboarding = () => {
               <CustomizeInput
                 type="number"
                 placeholder={"You Experience"}
-                value={formData.yearsOfExperience}
+                value={formData?.yearsOfExperience}
                 onChange={(e) => handleInputChange("yearsOfExperience", e)}
               />
             </div>
@@ -177,7 +180,7 @@ const Onboarding = () => {
                 id="bio"
                 name="bio"
                 rows={4}
-                value={formData.bio}
+                value={formData?.bio}
                 onChange={(e) => handleInputChange("bio", e)}
                 required
                 onFocus={() => setIsFocused(true)}
@@ -202,7 +205,7 @@ const Onboarding = () => {
                   key={item}
                   item={item}
                   setFormData={setFormData}
-                  formdata={formData.timings}
+                  formdata={formData?.timings}
                 />
               );
             })}
@@ -211,12 +214,12 @@ const Onboarding = () => {
             <h2>Session Fee</h2>
             <div className="w-1/3">
               <CustomizeInput
-                value={formData.singlefee}
+                value={formData?.singlefee}
                 onChange={(e) => handleInputChange("singlefee", e)}
                 placeholder={"Fees for Individual"}
               />
               <CustomizeInput
-                value={formData.couplefee}
+                value={formData?.couplefee}
                 onChange={(e) => handleInputChange("couplefee", e)}
                 placeholder={"Fees for Couples"}
               />
@@ -226,7 +229,7 @@ const Onboarding = () => {
             <h2>Session Details</h2>
             <div className="w-1/3">
               <CustomizeInput
-                value={formData.meetLink}
+                value={formData?.meetLink}
                 onChange={(e) => handleInputChange("meetLink", e)}
                 placeholder={"Link For Session"}
               />
@@ -250,7 +253,7 @@ const Onboarding = () => {
                 }}
                 options={changeReactSelectoptions(SessionTime)}
                 defaultValue={changeReactSelectoptions(SessionTime).find(
-                  (op) => op.value === formData.sessionTime
+                  (op) => op.value === formData?.sessionTime
                 )}
                 onChange={(option) =>
                   handleChangeSpecialties("sessionTime", option.value)
@@ -277,7 +280,7 @@ const Onboarding = () => {
                 }}
                 options={changeReactSelectoptions(GapTime)}
                 defaultValue={changeReactSelectoptions(GapTime).find(
-                  (op) => op.value === formData.sessionGap
+                  (op) => op.value === formData?.sessionGap
                 )}
                 onChange={(option) =>
                   handleChangeSpecialties("sessionGap", option.value)
